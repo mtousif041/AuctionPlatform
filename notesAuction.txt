@@ -1,0 +1,237 @@
+ /////////////backend
+ "scripts": {
+   "start": "node server.js",
+   "dev": "nodemon server.js"
+  },
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+  //server bnane ke liye 
+  import express from "express'
+  const app = express ();
+  app.listen(5000,()=>{console.log("run")})
+
+
+    
+///////////////////////////////////////////////////////////
+ //configure for dotenv file
+  config({
+    path:"./config/config.env",
+});
+
+
+/////////////////////////////////////////////////////////////////////
+//27:00:00 cloudinary setup
+import cloudinary from "cloudinary"
+cloudinary.v2.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key:process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+
+
+//////////////////////////////////////////////////////////////////////////
+//apne frontend aur backend ko aapas me  connect krne ke liye ek package use krna hai cors
+import cors from 'cors'
+app.use(cors({
+    origin:[process.env.FRONTEND_URL],
+    methods:["POST", "GET", "PUT", "DELETE"], // manlo agr aapne PUT aur DELETE methods yha se hta diye to ab aap apne frontend me put aur delete methode ko use nhai kr paaoge , cors error aayega maybe
+    credentials:true, 
+}));
+
+/////////////////////////////////////////////////////////////////////////////
+// ek chota sa middleware
+app.use(cookieParser()); // cookieParser kiya krta hai ki cookies ko store karvaane ka kaam krta haai, agr aap cookieParser ka use nhai kroge to aapke cookies to generate honge but aap une backend me access nhai kr paaoge 
+
+app.use(express.json()); //  ye hmare pass jo data hai usko return krta hai json formate me 
+
+app.use(express.urlencoded({extended:true})); // ye ye kaam krta hai ki maanlo aapne ek field bnai hai number formate ke liya aur aap agr ab aap usme array bhej rhe ho to ye error de deta
+
+
+//ye same to same rhega as a documentation
+import fileUpload from "express-fileupload";
+app.use(fileUpload({ // ye alternative hai multer ka, multer se aap files ko yehi backend/storage me bhi store kr shakte ho, but hum multur ki jagha file upload ka use kr rhe hai 
+    useTempFiles:true,
+    tempFileDir: "/tmp/",
+})); 
+
+
+/////////////////////////////////////////////////////////////////////
+import mongoose from "mongoose";
+
+export const connection = ()=>{
+    mongoose.connect(process.env.MONGO_URI, {
+        dbName: "MERN_AUCTION_PLATFORM", // isme aap bichme space nhai dhe skte hai, aur database ka bhi yehi name hona Chaye
+    }).then(()=>{
+        console.log("Connected to database");
+        
+    }).catch((err)=>{
+        console.log(`Some error occured while connecting to database: ${err}`);
+        
+    });
+};
+
+import { connection } from "./database/connection.js";
+///connecting to db
+connection();
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+///models
+->userSchema.js->
+import mongoose from "mongoose";
+const userSchema  = new mongoose.Schema({
+    });
+export const User = mongoose.model("User", userSchema);
+
+methods in Schema
+type
+minLength,
+maxLength,
+required
+validate
+select
+selected
+enum
+default
+createdAt: {
+        type: Date,
+        default: Date.now,
+    },
+
+///////////////////////////////////////ways step by step ///////////////////////////////////////////////
+register=app.js->server.js->Schema->Controller->ErrorHandler->Controller->router.js->app.js->postman->password encrypt in schema, compaare, token generate ->jwtToken.js->postman
+login= controller->route->postman
+getProfie=controller->auth.js->userSchema->route->postman
+fetchLeaderboard=>controller->route->postman
+
+
+//auction
+addNewAuctionItem = auctionSchema->controller->routes->app.js->auth.js->trackCommissionStatus.js->postman
+
+
+
+//sort me 
+register=app.js->server.js->Schema->Controller->ErrorHandler->Controller->router.js->app.js->postman->password encrypt in schema, compaare->frontend->store.js->userSlice.js->Main.jsx me Provider->App.jsx routing->SiseDrawer and SignUp.jsx-> fir persist krne ke liye userSlice me fetchUser function aur fetchUser rdeucers bnaya aur ->app.js me use kiya 
+
+
+
+
+
+
+///////////////////////////////////////////////some methodes
+mimetype //yaani image ya video ke piche jo extension hota hai png , jpeg, mp4 usko nikalne ke liye 
+
+
+
+
+
+
+
+
+/////////////////////////hooks in react 
+useSelector
+useState
+useDispatch
+useNavigate
+
+
+
+///////////////////////////////////////////////
+# sm:flex-1  // flex-1 means ki agr ek row me 2 ya 3 input field hai to agr hum teeno input field me agr flex-1 flex-1 flex-1 lga denge to  teeno field brabar size ke ho jaayenge equally 
+
+# <Link to={"/auctions"} > auction</Link> //react-router-dom
+# <Link to="/sign-up"  >  </Link>
+
+# frontend me console.log("test") use kaise use hota hai
+
+#<form action=""></form>
+ <form className="flex flex-col gap-5 w-full" onSubmit={handleRegister} >
+<button type="submit"></button> 
+ </form>
+
+
+
+# <div className="flex flex-col  sm:flex-1">
+  <label className="text-[16px] text-stone-600">Full Name</label>
+     <input
+        type="text"
+        value={userName}
+        onChange={(e) => setUserName(e.target.value)}
+        className="text-[16px] py-2 bg-transparent border-b-[1px] border-b-stone-500 focus:outline-none"
+     />
+  </div>
+
+
+
+#  <div className="flex flex-col sm:flex-1">
+                <label className="text-[16px] text-stone-600">Role</label>
+                <select
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  className="text-[16px] py-2 bg-transparent border-b-[1px] border-b-stone-500 focus:outline-none"
+                >
+                  <option value="">Select Role</option>
+                  <option value="Auctioneer">Auctioneer</option>
+                  <option value="Bidder">Bidder</option>
+                </select>
+              </div>
+
+
+# image handling and image preview 
+ const imageHandler = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setImage(file);
+      setImagePreview(reader.result);
+    };
+  };
+
+
+
+// kiya sare map methods me return krna jarorri hai
+ {paymentProofs.length > 0 ? (
+              paymentProofs.map((element, index) => {
+                return (   ******************************************
+                  <tr key={index}>
+                    <td className="py-2 px-4 text-center">{element.userId}</td>
+                    <td className="py-2 px-4 text-center">{element.status}</td>
+                    <td className="flex items-center py-4 justify-center gap-3">
+                      <button
+                        className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700 transition-all duration-300"
+                        onClick={() => handleFetchPaymentDetail(element._id)}
+                      >
+                        Update
+                      </button>
+                      <button
+                        className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700 transition-all duration-300"
+                        onClick={() => handlePaymentProofDelete(element._id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr className="text-center text-xl text-sky-600 py-3">
+                <td>No payment proofs are found.</td>
+              </tr>
+            )}
+
+
+//////second type map without return 
+ <div className="flex flex-wrap gap-6">
+              {allAuctions.map((element) => (
+                <Card // card khuch cheeje accept krta hai
+                  title={element.title}
+                  startTime={element.startTime}
+                  endTime={element.endTime}
+                  imgSrc={element.image?.url}
+                  startingBid={element.startingBid}
+                  id={element._id}
+                  key={element._id}
+                />
+              ))}
+            </div>

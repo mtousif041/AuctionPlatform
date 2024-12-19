@@ -1,0 +1,55 @@
+C:\Users\mtous>node -v
+v20.10.0
+
+C:\Users\mtous>npm -v
+10.2.3
+
+C:\Users\mtous>
+
+///////////////////////////////////////////////////////backend //////////////////
+npm install bcrypt cloudinary cookie-parser cors dotenv express express-fileupload jsonwebtoken mongoose node-cron nodemailer 
+npm init
+
+email automation ke liye hum yha pr nodemailer ka use krenge
+
+super admin role ko register nhai krva shakte ho usko mannually data base me likhna hoga 
+
+
+
+////////////////////////////////////////////////////////////Front End 07:15:00
+npm create vite@latest
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+npm i -D @types/node
+npx shadcn@latest init
+
+
+tailwind css ko add krne ke liye 
+tailwind.config.mjs ko file ko edit kra aur 
+postcss.config.mjs file ko edit kra aur 
+index.css file ko edit kra aur 
+fir ye command npx tailwindcss init run hui 
+
+
+npm install react-router-dom react-spinners react-toastify lucide-react axios react-redux @reduxjs/toolkit chart.js react-chartjs-2 react-datepicker react-icons
+
+npm i @emailjs/browser   
+hum log contact form ke liye ye package use krenge, taki hume backend likhne ki jarrorat hi nhai pdegi agr koi bhi ye form fill krega to form ka content hame hmari email me recieved ho jayega ,  for Contact.jsx me 
+
+Hello {{to_name}}, Tou have received a new message from {{name}}.
+Subject:{{subject}}
+Message:{{message}}
+Message:{{message}}
+Email:[{email}]
+Best regards, PrimeBid
+
+
+
+
+///////////////Project Deploye on  render  ->17:40:50
+
+
+
+
+
+
